@@ -39,14 +39,6 @@
  *   - remember whether the soft-limit warning was already emitted
  *   - include `struct list_head` linkage
  * ============================================================== */
-struct monitored_entry {
-    pid_t pid;
-    char container_id[32];
-    unsigned long soft_limit_bytes;
-    unsigned long hard_limit_bytes;
-    int soft_warned;            /* 1 if soft-limit warning already emitted */
-    struct list_head list;      /* kernel linked-list linkage */
-};
 
 /* ==============================================================
  * TODO 2: Declare the global monitored list and a lock.
