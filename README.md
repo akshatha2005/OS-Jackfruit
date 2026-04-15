@@ -1,15 +1,23 @@
-Multi-Container Runtime
+# Multi-Container Runtime
 
 A lightweight Linux container runtime in C with a supervisor process and a kernel-space memory monitor.
 
-1. Team
-Name	          SRN
-Akshatha P	    PES2UG24CS048
-Aditi Agarwal	  PES2UG24CS029
-2. Setup & Execution
-Prerequisites
-Ubuntu 22.04/24.04 (VM, Secure Boot OFF, no WSL)
-Install dependencies:
+## Team
+
+| Name | SRN |
+|------|-----|
+| Akshatha P | PES2UG24CS048 |
+| Aditi Agarwal | PES2UG24CS029 |
+
+---
+
+## Setup & Execution
+
+### Prerequisites
+- Ubuntu 22.04/24.04 (VM, Secure Boot OFF, no WSL)
+
+### Install dependencies
+```bash
 sudo apt update
 sudo apt install -y build-essential linux-headers-$(uname -r)
 Clone & Prepare
@@ -25,12 +33,17 @@ sudo insmod monitor.ko
 ls -l /dev/container_monitor
 sudo dmesg | tail -3
 Run
+
+Copy workloads:
+
 cp cpu_hog memory_hog io_pulse rootfs/
 
-# Terminal 1
+Terminal 1
+
 sudo ./engine supervisor ./rootfs
 
-# Terminal 2
+Terminal 2
+
 sudo ./engine start alpha ./rootfs /cpu_hog
 sudo ./engine start beta ./rootfs /memory_hog --soft-mib 10 --hard-mib 20
 
@@ -42,46 +55,44 @@ sudo ./engine stop alpha beta
 sudo rmmod monitor
 ps aux | grep defunct
 make clean
-3. Demo Highlights
+Demo Highlights
 Multi-container execution under one supervisor
-ps shows container metadata (PID, state)
-Logging via bounded buffer (pipe + threads)
-CLI ↔ supervisor via UNIX socket (/tmp/mini_runtime.sock)
-Kernel logs:
+ps shows container metadata
+Logging via bounded buffer
+CLI via UNIX socket (/tmp/mini_runtime.sock)
 Soft limit → warning
 Hard limit → SIGKILL
-Scheduling: lower nice ⇒ more CPU
-Clean shutdown → no zombie processes
-4. Key Concepts
+Clean shutdown (no zombies)
+Key Concepts
 Isolation
-clone() with PID, UTS, mount namespaces
-chroot() + /proc mount
-Shared host kernel (logical isolation)
+clone() with namespaces (PID, UTS, mount)
+chroot() + /proc
+Shared kernel
 Supervisor
-Tracks containers & lifecycle
-Handles SIGCHLD → reaps processes
-Provides CLI control via socket
+Tracks containers
+Handles SIGCHLD
+CLI via socket
 IPC & Threads
-Pipe → logging (producer-conser buffer)
-UNIX socket → CLI communication
-Mutex + condition variables ensure safety
+Pipe → logging
+UNIX socket → control
+Mutex + condition variables
 Memory Control
-RSS = actual physical memory used
+RSS-based tracking
 Soft limit → warning
-Hard limit → process killed (kernel enforced)
+Hard limit → kill
 Scheduling
-Linux CFS uses nice values
-Lower nice ⇒ higher CPU share
-I/O-bound tasks yield CPU, CPU-bound dominate
-5. Design Tradeoffs
-No network namespace (simpler scope)
-Single-threaded supervisor (simpler, serialized CLI)
-Logging opens file per write (simpler, slight overhead)
-Kernel enforcement (reliable vs user-space polling)
-Nice values over cgroups (simpler demonstration)
-6. Experiments
+Linux CFS
+Lower nice ⇒ more CPU
+CPU-bound > I/O-bound
+Design Tradeoffs
+No network namespace
+Single-threaded supervisor
+Simple logging design
+Kernel-based enforcement
+Nice values instead of cgroups
+Experiments
 CPU vs CPU
-nice -10 > nice -5 (slightly higher CPU share)
+nice -10 > nice -5
 CPU vs I/O
-CPU-bound ≈ full CPU
-I/O-bound ≈ low CPU (waits on I/O)
+CPU-bound ≈ high CPU
+I/O-bound ≈ low CPU
