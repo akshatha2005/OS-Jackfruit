@@ -58,6 +58,7 @@ ps aux | grep defunct
 
 # Clean build artifacts
 make clean
+
 4. Engineering Analysis
 4.1 Isolation Mechanisms
 Each container is created using clone() with CLONE_NEWPID, CLONE_NEWUTS, and CLONE_NEWNS flags. These create isolated namespaces so that each container has its own PID space (PID 1 inside the container), its own hostname (set via sethostname()), and its own mount namespace.
