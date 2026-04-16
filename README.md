@@ -150,7 +150,7 @@ Supervisor starts and listens on `/tmp/mini_runtime.sock`, waiting for CLI comma
 
 Container `alpha` is created (PID 4026), listed with `ps`, and stopped with SIGTERM. Container `beta` is then started, listed alongside `alpha`, and stopped.
 
-![Task 1: Container lifecycle](screenshots/task1-container-lifecycle.png)
+![Task 1: Container lifecycle](task1-container-lifecycle.png)
 
 ---
 
@@ -158,7 +158,7 @@ Container `alpha` is created (PID 4026), listed with `ps`, and stopped with SIGT
 
 `engine ps` shows tracked container metadata including name, PID, and state (`running` / `stopped` / `exited` / `killed`) for multiple containers simultaneously.
 
-![Task 2: Metadata tracking](screenshots/task2-metadata.png)
+![Task 2: Metadata tracking](task2-metadata.png)
 
 ---
 
@@ -166,7 +166,7 @@ Container `alpha` is created (PID 4026), listed with `ps`, and stopped with SIGT
 
 Container `alpha` runs `test.sh` which executes `cpu_hog`. After a brief wait, `engine logs alpha` retrieves the captured stdout lines, showing elapsed time and accumulator values from the workload.
 
-![Task 3: Log output](screenshots/task3-logging.png)
+![Task 3: Log output](task3-logging.png)
 
 ---
 
@@ -174,7 +174,7 @@ Container `alpha` runs `test.sh` which executes `cpu_hog`. After a brief wait, `
 
 `ls -la logs/` confirms `alpha.log` was written to disk by the logging pipeline.
 
-![Task 3: Log file on disk](screenshots/task3-log-file.png)
+![Task 3: Log file on disk](task3-log-file.png)
 
 ---
 
@@ -182,7 +182,7 @@ Container `alpha` runs `test.sh` which executes `cpu_hog`. After a brief wait, `
 
 `dmesg` output shows the kernel module registering containers and emitting **SOFT LIMIT** and **HARD LIMIT** events for both `alpha` and `beta` as RSS grows beyond the configured thresholds.
 
-![Task 4: Kernel limit messages](screenshots/task4-kernel-limits.png)
+![Task 4: Kernel limit messages](task4-kernel-limits.png)
 
 ---
 
@@ -190,7 +190,7 @@ Container `alpha` runs `test.sh` which executes `cpu_hog`. After a brief wait, `
 
 After exceeding the hard memory limit, `engine ps` shows both containers in `state=killed`, confirming kernel-space enforcement.
 
-![Task 4: Containers killed](screenshots/task4-hard-limit.png)
+![Task 4: Containers killed](task4-hard-limit.png)
 
 ---
 
@@ -198,7 +198,7 @@ After exceeding the hard memory limit, `engine ps` shows both containers in `sta
 
 Two `cpu_hog` containers are started: `high` with `--nice -5` and `low` with `--nice -10`.
 
-![Task 5: Scheduling setup](screenshots/task5-scheduling-setup.png)
+![Task 5: Scheduling setup](task5-scheduling-setup.png)
 
 ---
 
@@ -206,7 +206,7 @@ Two `cpu_hog` containers are started: `high` with `--nice -5` and `low` with `--
 
 `watch ps` output confirms PID 5997 (`nice=-5`) gets ~91% CPU and PID 6013 (`nice=-10`) gets ~93% CPU, demonstrating that lower nice values receive more CPU time from the Linux scheduler.
 
-![Task 5: Scheduling result](screenshots/task5-scheduling-result.png)
+![Task 5: Scheduling result](task5-scheduling-result.png)
 
 ---
 
@@ -214,7 +214,7 @@ Two `cpu_hog` containers are started: `high` with `--nice -5` and `low` with `--
 
 Supervisor receives `^C`, prints `Supervisor shutting down...` and `Supervisor exited cleanly.` The module is unloaded with `rmmod`. A final `ps aux | grep defunct` confirms no zombie processes remain.
 
-![Task 6: Clean teardown](screenshots/task6-teardown.png)
+![Task 6: Clean teardown](task6-teardown.png)
 
 ---
 
