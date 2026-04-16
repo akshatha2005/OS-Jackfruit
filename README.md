@@ -126,7 +126,7 @@ sudo rmmod monitor
 
 Shows successful compilation using `make` and extraction of the Alpine Linux root filesystem.
 
-![Setup: Build and rootfs](screenshots/setup-1-build.png)
+![Setup: Build and rootfs](setup-1-build.png)
 
 ---
 
@@ -134,7 +134,7 @@ Shows successful compilation using `make` and extraction of the Alpine Linux roo
 
 Runs the preflight script confirming Ubuntu 22.04, kernel headers, successful build, `insmod`/`rmmod` of `monitor.ko`, and `/dev/container_monitor` device creation.
 
-![Setup: Environment check](screenshots/setup-2-env-check.png)
+![Setup: Environment check](setup-2-env-check.png)
 
 ---
 
@@ -142,7 +142,7 @@ Runs the preflight script confirming Ubuntu 22.04, kernel headers, successful bu
 
 Supervisor starts and listens on `/tmp/mini_runtime.sock`, waiting for CLI commands.
 
-![Task 1: Supervisor start](screenshots/task1-supervisor.png)
+![Task 1: Supervisor start](task1-supervisor.png)
 
 ---
 
